@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/location.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class LoadingScreen extends StatefulWidget {
   @override
@@ -46,6 +47,12 @@ class _LoadingScreenState extends State<LoadingScreen> {
     int responseCode = response.statusCode;
     if (responseCode == 200) {
       String data = response.body;
+      var decodedData = jsonDecode(data);
+      String weatherID = decodedData['weather'][0]['main'];
+      String city = decodedData['name'];
+      double temp = decodedData['main']['temp'] - 273;
+
+      debugPrint('$city is $weatherID today at a temperature of $temp');
     } else {
       debugPrint(responseCode.toString());
     }
