@@ -1,6 +1,8 @@
+import 'package:clima/screens/location_screen.dart';
 import 'package:flutter/material.dart';
 import '../services/location.dart';
 import '../services/networking.dart';
+import 'package:flutter_spinkit/flutter_spinkit.dart';
 
 const apiKey = 'c25ea5f04e364669cad0caf7c4eb9045';
 
@@ -23,13 +25,10 @@ class _LoadingScreenState extends State<LoadingScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: ElevatedButton(
-          onPressed: () {
-            getLocationData();
-          },
-          child: Text('Get Location'),
-        ),
-      ),
+          child: SpinKitRotatingCircle(
+        color: Colors.white,
+        size: 50.0,
+      )),
     );
   }
 
@@ -46,8 +45,13 @@ class _LoadingScreenState extends State<LoadingScreen> {
 
     var weatherData = await networkHelper.getData();
 
-    // String weatherID = weatherData['weather'][0]['main'];
-    // String city = weatherData['name'];
-    // double temp = weatherData['main']['temp'] - 273;
+    String weatherID = weatherData['weather'][0]['main'];
+    String city = weatherData['name'];
+    int temp = weatherData['main']['temp'] - 273;
+    debugPrint('$weatherID in $city today with a temperature of $temp');
+
+    Navigator.push(context, MaterialPageRoute(builder: (context) {
+      return LocationScreen();
+    }));
   }
 }
