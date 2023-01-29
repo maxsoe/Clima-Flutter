@@ -12,3 +12,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
+// String weatherID = weatherData['weather'][0]['main'];
+// String city = weatherData['name'];
+// double temp = weatherData['main']['temp'] - 273;
