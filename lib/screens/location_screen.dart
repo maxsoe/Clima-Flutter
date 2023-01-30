@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:clima/utilities/constants.dart';
+import 'package:clima/services/weather.dart';
 
 class LocationScreen extends StatefulWidget {
   LocationScreen({this.locationWeather});
@@ -11,9 +12,11 @@ class LocationScreen extends StatefulWidget {
 }
 
 class _LocationScreenState extends State<LocationScreen> {
-  String weatherID;
-  String city;
+  WeatherModel weather = WeatherModel();
   int temperature;
+  String weatherIcon;
+  String weatherMessage;
+  String city;
 
   @override
   void initState() {
@@ -67,7 +70,7 @@ class _LocationScreenState extends State<LocationScreen> {
                       style: kTempTextStyle,
                     ),
                     Text(
-                      '☀️',
+                      weatherIcon,
                       style: kConditionTextStyle,
                     ),
                   ],
@@ -76,7 +79,7 @@ class _LocationScreenState extends State<LocationScreen> {
               Padding(
                 padding: EdgeInsets.only(right: 15.0),
                 child: Text(
-                  "It's 🍦 time in San Francisco!",
+                  '$weatherMessage in $city',
                   textAlign: TextAlign.right,
                   style: kMessageTextStyle,
                 ),
@@ -89,10 +92,16 @@ class _LocationScreenState extends State<LocationScreen> {
   }
 
   void updateUI(weatherData) {
-    weatherID = weatherData['weather'][0]['main'];
-    city = weatherData['name'];
-    double temp = weatherData['main']['temp'];
-    temperature = temp.toInt();
-    debugPrint('$weatherID in $city today with a temperature of $temp');
+    setState(() {
+      double temp = weatherData['main']['temp'];
+      temperature = temp.toInt();
+      var condition = weatherData['weather'][0]['id'];
+      weatherIcon = weather.getWeatherIcon(condition);
+      weatherMessage = weather.getMessage(temperature);
+      city = weatherData['name'];
+    });
+
+    debugPrint('weatherIcon is $weatherIcon');
+    // debugPrint('$weatherID in $city today with a temperature of $temp');
   }
 }
