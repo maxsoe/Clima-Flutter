@@ -8,6 +8,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData.dark(),
+      // https://www.flutterbeads.com/change-status-bar-color-in-flutter/
       home: LoadingScreen(),
     );
   }

@@ -35,23 +35,23 @@ class _LoadingScreenState extends State<LoadingScreen> {
   void getLocationData() async {
     Location location = Location();
     await location.getCurrentLocation();
-    latitude = location.latitude;
-    longitude = location.longitude;
-    // print(
-    // 'latitude: $location.latitude | longitude: $location.longitude'); // this doesn't work for some reason. Later learnt that await is needed for $location when doing to call.
-    print('latitude: $latitude | longitude: $longitude');
+    // latitude = location.latitude;
+    // longitude = location.longitude;
+    // print('latitude: $latitude | longitude: $longitude');
     NetworkHelper networkHelper = NetworkHelper(
-        'https://api.openweathermap.org/data/2.5/weather?lat=$latitude&lon=$longitude&appid=$apiKey');
+        'https://api.openweathermap.org/data/2.5/weather?lat=${location.latitude}&lon=${location.longitude}&units=metric&appid=$apiKey');
 
     var weatherData = await networkHelper.getData();
 
-    String weatherID = weatherData['weather'][0]['main'];
-    String city = weatherData['name'];
-    int temp = weatherData['main']['temp'] - 273;
-    debugPrint('$weatherID in $city today with a temperature of $temp');
+    // String weatherID = weatherData['weather'][0]['main'];
+    // String city = weatherData['name'];
+    // double temp = weatherData['main']['temp'];
+    // debugPrint('$weatherID in $city today with a temperature of $temp');
 
     Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return LocationScreen();
+      return LocationScreen(
+        locationWeather: weatherData,
+      );
     }));
   }
 }
